@@ -1,0 +1,57 @@
+@startuml
+
+!include <C4/C4_Context>
+!include <tupadr3/devicons/java>
+!include <tupadr3/devicons/mysql>
+!include <tupadr3/devicons/redis>
+!include <tupadr3/devicons2/apachekafka_original>
+!include <tupadr3/govicons/world>
+
+hide stereotype
+
+LAYOUT_LEFT_RIGHT()
+
+Person_Ext(user, "User", "Authorized User", $sprite="person")
+
+Enterprise_Boundary(org, "organization") {
+  SystemQueue(kafka, "Kafka", "Kafka KRaft Cluster", $sprite="apachekafka_original")
+  SystemDb(mysql, "MySQL", "MySQL InnoDB Cluster", $sprite="mysql")
+  SystemDb(redis, "Redis", "Redis Cluster", $sprite="redis")
+
+  Person(system_user, "System User", "Authorized System User", $sprite="robot")
+
+  Boundary(services, "IRSI") {
+    System(gateway, "Gateway", "Entry point for ingestion workflows", $sprite="java")
+    System(fetcher, "Fetcher", "Fetches real state data from multiple providers", $sprite="java")
+    System(dispatcher, "Dispatcher", "Coordinates workflows between services", $sprite="java")
+    System(archiver, "Archiver", "Saves real state data to persistent storage", $sprite="java")
+  }
+}
+
+System_Ext(psra, "PSRA", "Property Services Regulatory Authority", $sprite="world")
+
+Rel(user, gateway, "Sends new ingestion request")
+Rel(system_user, gateway, "Periodically sends ingestion request for current month")
+Rel(gateway, kafka, "Produces sales search requests")
+
+Rel(kafka, dispatcher, "Consumes sales search results")
+Rel(dispatcher, kafka, "Produces sales details request")
+
+Rel(kafka, fetcher, "Consumes sales search requests")
+Rel(kafka, fetcher, "Consumes sales details requests")
+
+Rel(fetcher, redis, "Check rate-limiting on suppliers")
+
+Rel(fetcher, psra, "Performs sales search")
+Rel(fetcher, psra, "Requests sales details")
+
+Rel(fetcher, kafka, "Produces sales search results")
+Rel(fetcher, kafka, "Produces sales details results")
+
+Rel(kafka, archiver, "Consumes sales search results")
+Rel(kafka, archiver, "Consumes sales details results")
+
+Rel(archiver, mysql, "Upserts property sales")
+Rel(archiver, mysql, "Upserts property details")
+
+@enduml
