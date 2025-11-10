@@ -14,8 +14,6 @@ public class JsonKafkaSerializer implements Serializer<Object> {
     @Override
     public byte[] serialize(String topic, Object data) {
         try {
-            // TODO: remove
-            System.out.println(mapper.writeValueAsString(data));
             return mapper.writeValueAsBytes(data);
         } catch (JsonProcessingException e) {
             throw new SerializationException(e);
