@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 
 import vcps.irsi.gateway.dto.payload.SalesIngestionRequest;
 import vcps.irsi.gateway.dto.payload.StatusMessageResponse;
+import vcps.irsi.gateway.services.ingestion.ISalesIngestionHandler;
 
 /**
  * TODO: doc
@@ -18,13 +19,18 @@ import vcps.irsi.gateway.dto.payload.StatusMessageResponse;
 @RequestMapping("/api/ingestion")
 public class SalesController {
 
+    private final ISalesIngestionHandler handler;
+
+    public SalesController(ISalesIngestionHandler handler) {
+        this.handler = handler;
+    }
+
     /**
      * TODO: doc
      */
     @PostMapping("/sales")
     public ResponseEntity<StatusMessageResponse> handle(@Valid @RequestBody SalesIngestionRequest request) {
-        // TODO: what to do with the message
-
+        handler.accept(request);
         return ResponseEntity.ok(StatusMessageResponse.success());
     }
 }
