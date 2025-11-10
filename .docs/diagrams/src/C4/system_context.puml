@@ -9,6 +9,8 @@
 
 hide stereotype
 
+skinparam padding 10
+
 LAYOUT_LEFT_RIGHT()
 
 Person_Ext(user, "User", "Authorized User", $sprite="person")
@@ -37,21 +39,16 @@ Rel(gateway, kafka, "Produces sales search requests")
 Rel(kafka, dispatcher, "Consumes sales search results")
 Rel(dispatcher, kafka, "Produces sales details request")
 
-Rel(kafka, fetcher, "Consumes sales search requests")
-Rel(kafka, fetcher, "Consumes sales details requests")
+Rel(kafka, fetcher, "Consumes sales search and details requests")
 
 Rel(fetcher, redis, "Check rate-limiting on suppliers")
 
-Rel(fetcher, psra, "Performs sales search")
-Rel(fetcher, psra, "Requests sales details")
+Rel(fetcher, psra, "Performs sales search / Requests sales details")
 
-Rel(fetcher, kafka, "Produces sales search results")
-Rel(fetcher, kafka, "Produces sales details results")
+Rel(fetcher, kafka, "Produces sales search and details results")
 
-Rel(kafka, archiver, "Consumes sales search results")
-Rel(kafka, archiver, "Consumes sales details results")
+Rel(kafka, archiver, "Consumes sales search and details results")
 
-Rel(archiver, mysql, "Upserts property sales")
-Rel(archiver, mysql, "Upserts property details")
+Rel(archiver, mysql, "Upserts property sales and details")
 
 @enduml

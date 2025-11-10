@@ -1,13 +1,13 @@
-package vcps.irsi.archiver;
+package vcps.irsi.dispatcher;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class IrishRealStateIngestionArchiverApplication {
+public class DispatcherApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(IrishRealStateIngestionArchiverApplication.class, args);
+		SpringApplication.run(DispatcherApplication.class, args);
 	}
 
 }

@@ -1,0 +1,44 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-GatewayApplication<gateway>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "vcps.irsi.gateway.GatewayApplication",
+            "projectName": "gateway",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-ArchiverApplication<archiver>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "vcps.irsi.archiver.ArchiverApplication",
+            "projectName": "archiver",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-DispatcherApplication<dispatcher>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "vcps.irsi.dispatcher.DispatcherApplication",
+            "projectName": "dispatcher",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-FetcherApplication<fetcher>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "vcps.irsi.fetcher.FetcherApplication",
+            "projectName": "fetcher",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
