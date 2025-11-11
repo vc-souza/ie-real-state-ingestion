@@ -1,18 +1,19 @@
-package vcps.irsi.gateway.services.ingestion;
+package vcps.irsi.gateway.services.ingestion.psra;
 
 import java.time.Period;
 import java.util.stream.Stream;
 
 import org.apache.kafka.clients.producer.ProducerRecord;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import lombok.extern.slf4j.Slf4j;
 
-import vcps.irsi.gateway.dto.message.PSRASalesSearchMessage;
+import vcps.irsi.gateway.config.psra.PSRAConfig;
+import vcps.irsi.gateway.dto.kafka.PSRASalesSearchMessage;
 import vcps.irsi.gateway.dto.payload.SalesIngestionRequest;
+import vcps.irsi.gateway.services.ingestion.ISalesIngestionHandler;
 
 /**
  * TODO: doc
@@ -23,13 +24,13 @@ public class PSRASalesIngestionHandler implements ISalesIngestionHandler {
     private final static String VERSION = "1.0.0";
 
     private final KafkaTemplate<String, PSRASalesSearchMessage> kafkaTemplate;
-    private final String producerTopic;
+    private final PSRAConfig config;
 
     public PSRASalesIngestionHandler(
-            @Value("${psra.sales.kafka.producer.topic}") String producerTopic,
-            KafkaTemplate<String, PSRASalesSearchMessage> kafkaTemplate) {
-        this.producerTopic = producerTopic;
+            KafkaTemplate<String, PSRASalesSearchMessage> kafkaTemplate,
+            PSRAConfig config) {
         this.kafkaTemplate = kafkaTemplate;
+        this.config = config;
     }
 
     /**
@@ -67,7 +68,7 @@ public class PSRASalesIngestionHandler implements ISalesIngestionHandler {
      */
     private ProducerRecord<String, PSRASalesSearchMessage> toRecord(PSRASalesSearchMessage message) {
         ProducerRecord<String, PSRASalesSearchMessage> record = new ProducerRecord<>(
-                producerTopic,
+                config.getSales().getProducerTopic(),
                 message.county(),
                 message);
 

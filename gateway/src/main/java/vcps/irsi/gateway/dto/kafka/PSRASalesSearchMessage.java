@@ -1,4 +1,4 @@
-package vcps.irsi.gateway.dto.message;
+package vcps.irsi.gateway.dto.kafka;
 
 /**
  * TODO: doc

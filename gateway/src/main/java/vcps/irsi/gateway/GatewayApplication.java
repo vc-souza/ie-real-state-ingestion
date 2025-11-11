@@ -3,8 +3,8 @@ package vcps.irsi.gateway;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.context.annotation.Bean;
-
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @SpringBootApplication
+@ConfigurationPropertiesScan
 public class GatewayApplication {
 
 	public static void main(String[] args) {
@@ -31,6 +32,9 @@ public class GatewayApplication {
 		log.info("Graceful shutdown complete.");
 	}
 
+	/**
+	 * TODO: doc
+	 */
 	@Bean
 	ApplicationRunner runner() {
 		return args -> {
