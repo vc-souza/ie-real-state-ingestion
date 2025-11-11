@@ -6,12 +6,10 @@ import java.util.stream.Stream;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
-import jakarta.annotation.PostConstruct;
-import jakarta.annotation.PreDestroy;
 import lombok.extern.slf4j.Slf4j;
 
-import vcps.irsi.gateway.config.psra.PSRAConfig;
-import vcps.irsi.gateway.dto.kafka.PSRASalesSearchMessage;
+import vcps.irsi.gateway.config.PSRASupplierConfig;
+import vcps.irsi.gateway.dto.messages.PSRASalesSearchMessage;
 import vcps.irsi.gateway.dto.payload.SalesIngestionRequest;
 import vcps.irsi.gateway.services.ingestion.ISalesIngestionHandler;
 
@@ -24,30 +22,13 @@ public class PSRASalesIngestionHandler implements ISalesIngestionHandler {
     private final static String VERSION = "1.0.0";
 
     private final KafkaTemplate<String, PSRASalesSearchMessage> kafkaTemplate;
-    private final PSRAConfig config;
+    private final PSRASupplierConfig supplierConfig;
 
     public PSRASalesIngestionHandler(
             KafkaTemplate<String, PSRASalesSearchMessage> kafkaTemplate,
-            PSRAConfig config) {
+            PSRASupplierConfig supplierConfig) {
         this.kafkaTemplate = kafkaTemplate;
-        this.config = config;
-    }
-
-    /**
-     * TODO: doc
-     */
-    @PostConstruct
-    void init() {
-        log.info("Initialized.");
-    }
-
-    /**
-     * TODO: doc
-     */
-    @PreDestroy
-    void shutdown() {
-        log.info("Shutting down...");
-        log.info("Graceful shutdown complete.");
+        this.supplierConfig = supplierConfig;
     }
 
     /**
@@ -60,7 +41,7 @@ public class PSRASalesIngestionHandler implements ISalesIngestionHandler {
         return start
                 .datesUntil(end, Period.ofMonths(1))
                 .flatMap(date -> request.getCounties().stream()
-                        .map(county -> PSRASalesSearchMessage.of(county, date.getYear(), date.getMonthValue())));
+                        .map(county -> new PSRASalesSearchMessage(county, date.getYear(), date.getMonthValue())));
     }
 
     /**
@@ -68,7 +49,7 @@ public class PSRASalesIngestionHandler implements ISalesIngestionHandler {
      */
     private ProducerRecord<String, PSRASalesSearchMessage> toRecord(PSRASalesSearchMessage message) {
         ProducerRecord<String, PSRASalesSearchMessage> record = new ProducerRecord<>(
-                config.getSales().getProducerTopic(),
+                supplierConfig.getSales().getProducerTopic(),
                 message.county(),
                 message);
 
