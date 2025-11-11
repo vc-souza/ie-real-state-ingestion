@@ -1,10 +1,10 @@
-package vcps.irsi.gateway;
+package vcps.irsi.dispatcher;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class IrishRealStateIngestionGatewayApplicationTests {
+class DispatcherApplicationTests {
 
 	@Test
 	void contextLoads() {

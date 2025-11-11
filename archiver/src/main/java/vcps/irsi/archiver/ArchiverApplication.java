@@ -1,13 +1,13 @@
-package vcps.irsi.gateway;
+package vcps.irsi.archiver;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class IrishRealStateIngestionGatewayApplication {
+public class ArchiverApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(IrishRealStateIngestionGatewayApplication.class, args);
+		SpringApplication.run(ArchiverApplication.class, args);
 	}
 
 }

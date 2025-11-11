@@ -1,10 +1,10 @@
-package vcps.irsi.dispatcher;
+package vcps.irsi.archiver;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class IrishRealStateIngestionDispatcherApplicationTests {
+class ArchiverApplicationTests {
 
 	@Test
 	void contextLoads() {
