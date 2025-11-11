@@ -16,7 +16,6 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 /**
  * TODO: doc
@@ -59,7 +58,6 @@ class IngestionWindowValidator
  * TODO: doc
  */
 @Data
-@NoArgsConstructor
 @ValidIngestionWindow
 public class SalesIngestionRequest {
     private static final String COUNTY_REGEX = """

@@ -1,4 +1,4 @@
-package vcps.irsi.gateway.config.psra;
+package vcps.irsi.gateway.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import lombok.Getter;
@@ -10,7 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @ConfigurationProperties("suppliers.psra")
-public class PSRAConfig {
+public class PSRASupplierConfig {
 
     /**
      * TODO: doc
