@@ -20,7 +20,7 @@ import vcps.irsi.gateway.dto.payload.SalesIngestionRequest;
 @Slf4j
 @Service
 public class PSRASalesIngestionHandler implements ISalesIngestionHandler {
-    private final static String VERSION = "0.0.1";
+    private final static String VERSION = "1.0.0";
 
     private final KafkaTemplate<String, PSRASalesSearchMessage> kafkaTemplate;
     private final String producerTopic;
@@ -66,7 +66,10 @@ public class PSRASalesIngestionHandler implements ISalesIngestionHandler {
      * TODO: doc
      */
     private ProducerRecord<String, PSRASalesSearchMessage> toRecord(PSRASalesSearchMessage message) {
-        ProducerRecord<String, PSRASalesSearchMessage> record = new ProducerRecord<>(producerTopic, message);
+        ProducerRecord<String, PSRASalesSearchMessage> record = new ProducerRecord<>(
+                producerTopic,
+                message.county(),
+                message);
 
         record.headers().add("GatewayVersion", VERSION.getBytes());
 
@@ -77,8 +80,6 @@ public class PSRASalesIngestionHandler implements ISalesIngestionHandler {
     public void accept(SalesIngestionRequest request) {
         log.info("Generating PSRA messages for request: {}", request);
 
-        // TODO: does it work?
-        // TODO: parallel?
         messagesFor(request).map(this::toRecord).forEach(kafkaTemplate::send);
     }
 }
