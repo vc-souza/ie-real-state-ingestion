@@ -26,9 +26,8 @@ public class PSRASalesIngestionHandler implements ISalesIngestionHandler {
     private final String producerTopic;
 
     public PSRASalesIngestionHandler(
-        @Value("${psra.sales.kafka.producer.topic}") String producerTopic,
-        KafkaTemplate<String, PSRASalesSearchMessage> kafkaTemplate
-    ) {
+            @Value("${psra.sales.kafka.producer.topic}") String producerTopic,
+            KafkaTemplate<String, PSRASalesSearchMessage> kafkaTemplate) {
         this.producerTopic = producerTopic;
         this.kafkaTemplate = kafkaTemplate;
     }
@@ -50,21 +49,10 @@ public class PSRASalesIngestionHandler implements ISalesIngestionHandler {
         log.info("Graceful shutdown complete.");
     }
 
-    @Override
-    public void accept(SalesIngestionRequest request) {
-        log.info("Generating PSRA messages for request: {}", request);
-
-        generateMessages(request).map(this::toRecord).forEach(
-                r -> {
-                    log.info(r.toString());
-                });
-        // TODO: send records
-    }
-
     /**
      * TODO: doc
      */
-    private Stream<PSRASalesSearchMessage> generateMessages(SalesIngestionRequest request) {
+    private Stream<PSRASalesSearchMessage> messagesFor(SalesIngestionRequest request) {
         var start = request.getStart().withDayOfMonth(1);
         var end = request.getEnd().withDayOfMonth(1).plusMonths(1);
 
@@ -83,5 +71,14 @@ public class PSRASalesIngestionHandler implements ISalesIngestionHandler {
         record.headers().add("GatewayVersion", VERSION.getBytes());
 
         return record;
+    }
+
+    @Override
+    public void accept(SalesIngestionRequest request) {
+        log.info("Generating PSRA messages for request: {}", request);
+
+        // TODO: does it work?
+        // TODO: parallel?
+        messagesFor(request).map(this::toRecord).forEach(kafkaTemplate::send);
     }
 }

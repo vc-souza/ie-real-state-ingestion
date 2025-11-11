@@ -4,7 +4,6 @@ import java.util.function.Consumer;
 
 import vcps.irsi.gateway.dto.payload.SalesIngestionRequest;
 
-// TODO: better name?
 /**
  * TODO: doc
  */
