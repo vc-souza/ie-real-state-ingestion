@@ -49,7 +49,7 @@ public class PSRASalesIngestionHandler implements ISalesIngestionHandler {
      */
     private ProducerRecord<String, PSRASalesSearchMessage> toRecord(PSRASalesSearchMessage message) {
         ProducerRecord<String, PSRASalesSearchMessage> record = new ProducerRecord<>(
-                supplierConfig.getSales().getProducerTopic(),
+                supplierConfig.getSales().getSearchTopic(),
                 message.county(),
                 message);
 

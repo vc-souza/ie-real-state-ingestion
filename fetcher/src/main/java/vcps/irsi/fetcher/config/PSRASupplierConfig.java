@@ -1,8 +1,7 @@
-package vcps.irsi.gateway.config;
+package vcps.irsi.fetcher.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
-
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
@@ -28,6 +27,24 @@ public class PSRASupplierConfig {
          */
         @NotBlank
         private String searchTopic;
+
+        /**
+         * TODO: doc
+         */
+        @NotBlank
+        private String detailsTopic;
+
+        /**
+         * TODO: doc
+         */
+        @NotBlank
+        private String salesTopic;
+
+        /**
+         * TODO: doc
+         */
+        @NotBlank
+        private String propertiesTopic;
     }
 
     /**
