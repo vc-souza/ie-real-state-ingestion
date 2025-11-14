@@ -7,8 +7,8 @@ import vcps.irsi.fetcher.services.tracking.ITrackable;
 /**
  * TODO: doc
  */
-public record PSRASalesSearchMessage(String county, int year, int month) implements ITrackable, IThrottleable {
-    private static final String TRACKING_TEMPLATE = "%S-SALES-SEARCH-%S-%d-%d";
+public record PSRASalesDetailsMessage(String eircode, String unid) implements ITrackable, IThrottleable {
+    private static final String TRACKING_TEMPLATE = "%S-SALES-DETAILS-%S-%S";
 
     @Override
     public String getThrottlingIdentifier() {
@@ -17,6 +17,6 @@ public record PSRASalesSearchMessage(String county, int year, int month) impleme
 
     @Override
     public String getTrackingIdentifier() {
-        return TRACKING_TEMPLATE.formatted(Supplier.PSRA.name(), county(), year(), month());
+        return TRACKING_TEMPLATE.formatted(Supplier.PSRA.name(), eircode(), unid());
     }
 }
