@@ -1,6 +1,5 @@
 package vcps.irsi.fetcher.services.fetching.psra;
 
-import org.slf4j.Logger;
 import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
 
@@ -15,11 +14,6 @@ import vcps.irsi.fetcher.services.tracking.ITracker;
 @Slf4j
 @Service
 public class PSRASalesSearchFetcher implements IFetcher<PSRASalesSearchMessage> {
-    // TODO: from config with defaults? no defaults in the class? validation as well?
-    private static final IFetcher.Options FETCHER_OPTIONS = new IFetcher.Options();
-    private static final IThrottler.Options THROTTLER_OPTIONS = new IThrottler.Options();
-    private static final ITracker.Options TRACKING_OPTIONS = new ITracker.Options();
-
     private final IThrottler throttler;
     private final ITracker tracker;
 
@@ -29,33 +23,9 @@ public class PSRASalesSearchFetcher implements IFetcher<PSRASalesSearchMessage> 
     }
 
     @Override
-    public IFetcher.Options getFetcherOptions() {
-        return FETCHER_OPTIONS;
-    }
-
-    @Override
-    public IThrottler.Options getThrottlingOptions() {
-        return THROTTLER_OPTIONS;
-    }
-
-    @Override
-    public IThrottler getThrottler() {
-        return throttler;
-    }
-
-    @Override
-    public ITracker.Options getTrackingOptions() {
-        return TRACKING_OPTIONS;
-    }
-
-    @Override
-    public ITracker getTracker() {
-        return tracker;
-    }
-
-    @Override
-    public Logger getLogger() {
-        return log;
+    public IFetcher.Context getFetchingContext() {
+        return IFetcher.Context.builder().throttler(throttler).throttling(new IThrottler.Options())
+                .tracker(tracker).tracking(new ITracker.Options()).build();
     }
 
     @Override
