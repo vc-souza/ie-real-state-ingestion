@@ -1,9 +1,27 @@
 package vcps.irsi.fetcher.services.tracking;
 
+import java.time.Duration;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 /**
  * TODO: doc
  */
 public interface ITracker {
+    /**
+     * TODO: config
+     */
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Options {
+        private Duration duration = Duration.ofDays(90);
+    }
+
     /**
      * TODO: doc
      */
@@ -12,5 +30,5 @@ public interface ITracker {
     /**
      * TODO: doc
      */
-    void track(ITrackable trackable);
+    void track(ITrackable trackable, Options options);
 }

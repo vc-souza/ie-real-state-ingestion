@@ -17,6 +17,7 @@ import vcps.irsi.fetcher.services.tracking.ITracker;
 public class PSRASalesSearchFetcher implements IFetcher<PSRASalesSearchMessage> {
     private static final IFetcher.Options FETCHER_OPTIONS = new IFetcher.Options();
     private static final IThrottler.Options THROTTLER_OPTIONS = new IThrottler.Options();
+    private static final ITracker.Options TRACKING_OPTIONS = new ITracker.Options();
 
     private final IThrottler throttler;
     private final ITracker tracker;
@@ -39,6 +40,11 @@ public class PSRASalesSearchFetcher implements IFetcher<PSRASalesSearchMessage> 
     @Override
     public IThrottler getThrottler() {
         return throttler;
+    }
+
+    @Override
+    public ITracker.Options getTrackingOptions() {
+        return TRACKING_OPTIONS;
     }
 
     @Override

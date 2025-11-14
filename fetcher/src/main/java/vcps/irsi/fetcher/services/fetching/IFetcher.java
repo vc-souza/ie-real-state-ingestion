@@ -61,6 +61,11 @@ public interface IFetcher<T extends ITrackable & IThrottleable> {
     /**
      * TODO: doc
      */
+    ITracker.Options getTrackingOptions();
+
+    /**
+     * TODO: doc
+     */
     ITracker getTracker();
 
     /**
@@ -105,6 +110,6 @@ public interface IFetcher<T extends ITrackable & IThrottleable> {
 
         fetch(request);
 
-        getTracker().track(request);
+        getTracker().track(request, getTrackingOptions());
     }
 }

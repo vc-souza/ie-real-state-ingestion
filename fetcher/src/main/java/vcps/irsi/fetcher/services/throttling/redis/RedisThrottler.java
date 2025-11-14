@@ -23,11 +23,17 @@ public class RedisThrottler implements IThrottler {
      * TODO: doc
      */
     private String key(IThrottleable throttleable) {
-        return KEY_TEMPLATE.formatted(throttleable.getThrottlingIdentifier());
+        var id = throttleable.getThrottlingIdentifier();
+
+        if (id == null) {
+            return null;
+        }
+
+        return KEY_TEMPLATE.formatted(id);
     }
 
     @Override
-    public boolean isAllowed(IThrottleable throttleable, Options options) {
+    public boolean isAllowed(IThrottleable throttleable, IThrottler.Options options) {
         // TODO: impl!
         // TODO: remove
         System.out.println("KEY IS '%s'".formatted(key(throttleable)));

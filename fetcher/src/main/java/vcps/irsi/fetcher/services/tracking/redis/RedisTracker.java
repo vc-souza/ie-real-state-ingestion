@@ -1,5 +1,8 @@
 package vcps.irsi.fetcher.services.tracking.redis;
 
+import java.time.Instant;
+import java.util.Optional;
+
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -23,21 +26,29 @@ public class RedisTracker implements ITracker {
      * TODO: doc
      */
     private String key(ITrackable trackable) {
-        return KEY_TEMPLATE.formatted(trackable.getTrackingIdentifier());
+        var id = trackable.getTrackingIdentifier();
+
+        if (id == null) {
+            return null;
+        }
+
+        return KEY_TEMPLATE.formatted(id);
     }
 
     @Override
     public boolean isTracked(ITrackable trackable) {
-        // TODO: impl
-        // TODO: remove
-        System.out.println("KEY IS '%s'".formatted(key(trackable)));
-        return false;
+        return Optional.ofNullable(key(trackable)).map(redisTemplate::hasKey).orElse(false);
     }
 
+    @SuppressWarnings("null")
     @Override
-    public void track(ITrackable trackable) {
-        // TODO: impl
-        // TODO: remove
-        System.out.println("KEY IS '%s'".formatted(key(trackable)));
+    public void track(ITrackable trackable, ITracker.Options options) {
+        var trackingKey = key(trackable);
+
+        if (trackingKey == null) {
+            return;
+        }
+
+        redisTemplate.opsForValue().set(trackingKey, Instant.now().toString(), options.getDuration());
     }
 }
