@@ -25,5 +25,4 @@ public class KafkaHealthIndicator implements HealthIndicator {
             return Health.down(e).build();
         }
     }
-    
 }
