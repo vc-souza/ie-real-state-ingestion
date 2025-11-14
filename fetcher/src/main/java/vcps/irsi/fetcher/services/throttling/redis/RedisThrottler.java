@@ -1,5 +1,8 @@
 package vcps.irsi.fetcher.services.throttling.redis;
 
+import java.time.Instant;
+import java.util.Optional;
+
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -32,12 +35,18 @@ public class RedisThrottler implements IThrottler {
         return KEY_TEMPLATE.formatted(id);
     }
 
+    @SuppressWarnings("null")
     @Override
     public boolean isAllowed(IThrottleable throttleable, IThrottler.Options options) {
-        // TODO: impl!
-        // TODO: remove
-        System.out.println("KEY IS '%s'".formatted(key(throttleable)));
-        return true;
+        var throttlingKey = key(throttleable);
 
+        if (throttlingKey == null) {
+            return true;
+        }
+
+        return Optional
+                .ofNullable(redisTemplate.opsForValue().setIfAbsent(throttlingKey, Instant.now().toString(),
+                        options.getDuration()))
+                .orElse(false);
     }
 }

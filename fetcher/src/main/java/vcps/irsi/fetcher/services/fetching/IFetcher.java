@@ -76,12 +76,12 @@ public interface IFetcher<T extends ITrackable & IThrottleable> {
     /**
      * TODO: doc
      */
-    void fetch(T request);
+    void doFetch(T request);
 
     /**
      * TODO: doc
      */
-    default void handle(T request)
+    default void fetch(T request)
             throws ThrottledRequestException, InterruptedException {
 
         if (getTracker().isTracked(request)) {
@@ -108,7 +108,7 @@ public interface IFetcher<T extends ITrackable & IThrottleable> {
             throw new ThrottledRequestException(request);
         }
 
-        fetch(request);
+        doFetch(request);
 
         getTracker().track(request, getTrackingOptions());
     }

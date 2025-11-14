@@ -1,9 +1,9 @@
 package vcps.irsi.fetcher.services.fetching.psra;
 
 import org.slf4j.Logger;
-import org.springframework.stereotype.Component;
-
+import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
+
 import vcps.irsi.fetcher.dto.messages.PSRASalesSearchMessage;
 import vcps.irsi.fetcher.services.fetching.IFetcher;
 import vcps.irsi.fetcher.services.throttling.IThrottler;
@@ -13,8 +13,9 @@ import vcps.irsi.fetcher.services.tracking.ITracker;
  * TODO: doc
  */
 @Slf4j
-@Component
+@Service
 public class PSRASalesSearchFetcher implements IFetcher<PSRASalesSearchMessage> {
+    // TODO: from config with defaults? no defaults in the class? validation as well?
     private static final IFetcher.Options FETCHER_OPTIONS = new IFetcher.Options();
     private static final IThrottler.Options THROTTLER_OPTIONS = new IThrottler.Options();
     private static final ITracker.Options TRACKING_OPTIONS = new ITracker.Options();
@@ -58,7 +59,7 @@ public class PSRASalesSearchFetcher implements IFetcher<PSRASalesSearchMessage> 
     }
 
     @Override
-    public void fetch(PSRASalesSearchMessage request) {
+    public void doFetch(PSRASalesSearchMessage request) {
         // TODO: impl
         log.info("Fetcher got {}!!!", request);
     }
