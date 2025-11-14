@@ -1,7 +1,5 @@
 package vcps.irsi.fetcher;
 
-import java.util.stream.IntStream;
-
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -11,7 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 
 import vcps.irsi.fetcher.dto.messages.PSRASalesSearchMessage;
 import vcps.irsi.fetcher.services.fetching.psra.PSRASalesSearchFetcher;
-import vcps.irsi.fetcher.services.throttling.ThrottledRequestException;
 
 /**
  * TODO: doc
@@ -20,13 +17,12 @@ import vcps.irsi.fetcher.services.throttling.ThrottledRequestException;
 @SpringBootApplication
 @ConfigurationPropertiesScan
 public class FetcherApplication {
+	// TODO: remove
+	private final PSRASalesSearchFetcher sales;
 
 	// TODO: remove
-	private final PSRASalesSearchFetcher salesSearchFetcher;
-
-	// TODO: remove
-	public FetcherApplication(PSRASalesSearchFetcher salesSearchFetcher) {
-		this.salesSearchFetcher = salesSearchFetcher;
+	public FetcherApplication(PSRASalesSearchFetcher sales) {
+		this.sales = sales;
 	}
 
 	public static void main(String[] args) {
@@ -41,19 +37,9 @@ public class FetcherApplication {
 		return args -> {
 			log.info("IRSI Fetcher is running");
 
-			// TODO: remove
-			var message = new PSRASalesSearchMessage("Dublin", 2025, 1);
-			IntStream.rangeClosed(1, 5).forEach(i -> {
-				try {
-					salesSearchFetcher.fetch(message);
-				} catch (ThrottledRequestException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			});
+			var request = new PSRASalesSearchMessage("Dublin", 2025, 1);
+			boolean fetched = sales.fetch(request);
+			log.info("fetched? {}", fetched);
 		};
 	}
 }
