@@ -25,7 +25,6 @@ Enterprise_Boundary(org, "organization") {
   Boundary(services, "IRSI") {
     System(gateway, "Gateway", "Entry point for ingestion workflows", $sprite="java")
     System(fetcher, "Fetcher", "Fetches real state data from multiple providers", $sprite="java")
-    System(dispatcher, "Dispatcher", "Coordinates workflows between services", $sprite="java")
     System(archiver, "Archiver", "Saves real state data to persistent storage", $sprite="java")
   }
 }
@@ -36,14 +35,11 @@ Rel(user, gateway, "Sends ingestion request")
 Rel(system_user, gateway, "Periodically sends ingestion request for current month")
 Rel(gateway, kafka, "Produces sales search requests")
 
-Rel(kafka, dispatcher, "Consumes sales")
-Rel(dispatcher, kafka, "Produces sales details request")
+Rel(kafka, fetcher, "Consumes sales search requests")
 
-Rel(kafka, fetcher, "Consumes sales search and details requests")
+Rel(fetcher, redis, "Checks rate-limiting on suppliers and tracks completed requests")
 
-Rel(fetcher, redis, "Checks rate-limiting on suppliers")
-
-Rel(fetcher, psra, "Performs sales search and requests sales details")
+Rel(fetcher, psra, "Performs sales search")
 
 Rel(fetcher, kafka, "Produces sales and properties")
 

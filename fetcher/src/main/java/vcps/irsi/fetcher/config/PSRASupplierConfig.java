@@ -32,12 +32,6 @@ public class PSRASupplierConfig {
          * TODO: doc
          */
         @NotBlank
-        private String detailsTopic;
-
-        /**
-         * TODO: doc
-         */
-        @NotBlank
         private String salesTopic;
 
         /**

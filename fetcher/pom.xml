@@ -37,12 +37,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.jsoup</groupId>
-			<artifactId>jsoup</artifactId>
-			<version>1.21.1</version>
-		</dependency>
-
-		<dependency>
 			<groupId>io.lettuce</groupId>
 			<artifactId>lettuce-core</artifactId>
 			<version>7.0.0.RELEASE</version>

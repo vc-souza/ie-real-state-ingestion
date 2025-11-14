@@ -8,9 +8,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.context.annotation.Bean;
 import lombok.extern.slf4j.Slf4j;
-import vcps.irsi.fetcher.dto.messages.PSRASalesDetailsMessage;
+
 import vcps.irsi.fetcher.dto.messages.PSRASalesSearchMessage;
-import vcps.irsi.fetcher.services.fetching.psra.PSRASalesDetailsFetcher;
 import vcps.irsi.fetcher.services.fetching.psra.PSRASalesSearchFetcher;
 import vcps.irsi.fetcher.services.throttling.ThrottledRequestException;
 
@@ -24,12 +23,10 @@ public class FetcherApplication {
 
 	// TODO: remove
 	private final PSRASalesSearchFetcher salesSearchFetcher;
-	private final PSRASalesDetailsFetcher salesDetailsFetcher;
 
 	// TODO: remove
-	public FetcherApplication(PSRASalesSearchFetcher salesSearchFetcher, PSRASalesDetailsFetcher salesDetailsFetcher) {
+	public FetcherApplication(PSRASalesSearchFetcher salesSearchFetcher) {
 		this.salesSearchFetcher = salesSearchFetcher;
-		this.salesDetailsFetcher = salesDetailsFetcher;
 	}
 
 	public static void main(String[] args) {
@@ -57,20 +54,6 @@ public class FetcherApplication {
 					e.printStackTrace();
 				}
 			});
-
-			// // TODO: remove
-			// var message = new PSRASalesDetailsMessage("D11V6K6", "UNID-18CE1B61AD9C2D2680258D4000602679");
-			// IntStream.rangeClosed(1, 5).forEach(i -> {
-			// 	try {
-			// 		salesDetailsFetcher.fetch(message);
-			// 	} catch (ThrottledRequestException e) {
-			// 		// TODO Auto-generated catch block
-			// 		e.printStackTrace();
-			// 	} catch (InterruptedException e) {
-			// 		// TODO Auto-generated catch block
-			// 		e.printStackTrace();
-			// 	}
-			// });
 		};
 	}
 }
