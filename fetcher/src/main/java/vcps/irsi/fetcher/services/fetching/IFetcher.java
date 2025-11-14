@@ -1,7 +1,6 @@
 package vcps.irsi.fetcher.services.fetching;
 
 import lombok.Builder;
-import lombok.Getter;
 
 import vcps.irsi.fetcher.services.throttling.IThrottleable;
 import vcps.irsi.fetcher.services.throttling.IThrottler;

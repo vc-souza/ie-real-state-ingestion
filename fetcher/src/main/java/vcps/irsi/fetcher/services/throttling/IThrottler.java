@@ -21,27 +21,27 @@ public interface IThrottler {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Options {
-        private Duration duration = Duration.ofSeconds(60);
-        private double minJitter = .05;
-        private double maxJitter = .15;
-        private int maxRetries = 10;
-    }
+        private static final Random RANDOM = new Random();
 
-    static final Random RANDOM = new Random();
+        private Duration duration = Duration.ofSeconds(60);
+        private double minRetryJitter = .05;
+        private double maxRetryJitter = .15;
+        private int maxRetries = 10;
+
+        /**
+         * TODO: doc
+         */
+        private long secondsToNextAttempt() {
+            double multiplier = 1.0 + RANDOM.nextDouble(minRetryJitter, maxRetryJitter);
+            double seconds = multiplier * duration.toSeconds();
+            return Math.round(seconds);
+        }
+    }
 
     /**
      * TODO: doc
      */
     boolean isAllowed(IThrottleable throttleable, Options options);
-
-    /**
-     * TODO: doc
-     */
-    private long secondsToNextAttempt(Options options) {
-        double multiplier = 1.0 + RANDOM.nextDouble(options.minJitter, options.maxJitter);
-        double seconds = multiplier * options.duration.toSeconds();
-        return Math.round(seconds);
-    }
 
     /**
      * TODO: doc
@@ -57,7 +57,7 @@ public interface IThrottler {
                 break;
             }
 
-            TimeUnit.SECONDS.sleep(secondsToNextAttempt(options));
+            TimeUnit.SECONDS.sleep(options.secondsToNextAttempt());
         }
 
         if (!allowed) {

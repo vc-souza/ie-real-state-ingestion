@@ -14,18 +14,16 @@ import vcps.irsi.fetcher.services.tracking.ITracker;
 @Slf4j
 @Service
 public class PSRASalesSearchFetcher implements IFetcher<PSRASalesSearchMessage> {
-    private final IThrottler throttler;
-    private final ITracker tracker;
+    private final IFetcher.Context context;
 
     public PSRASalesSearchFetcher(IThrottler throttler, ITracker tracker) {
-        this.throttler = throttler;
-        this.tracker = tracker;
+        this.context = IFetcher.Context.builder().throttler(throttler).throttling(new IThrottler.Options())
+                .tracker(tracker).tracking(new ITracker.Options()).build();
     }
 
     @Override
     public IFetcher.Context getFetchingContext() {
-        return IFetcher.Context.builder().throttler(throttler).throttling(new IThrottler.Options())
-                .tracker(tracker).tracking(new ITracker.Options()).build();
+        return context;
     }
 
     @Override
