@@ -31,7 +31,7 @@ public interface IFetcher<T extends ITrackable & IThrottleable> {
     /**
      * TODO: doc
      */
-    void doFetch(T request);
+    void handle(T request);
 
     /**
      * TODO: doc
@@ -45,7 +45,7 @@ public interface IFetcher<T extends ITrackable & IThrottleable> {
             return false;
         }
 
-        ctx.throttler.throttle(() -> doFetch(request), request, ctx.throttling);
+        ctx.throttler.throttle(() -> handle(request), request, ctx.throttling);
 
         ctx.tracker.track(request, ctx.tracking);
 

@@ -27,7 +27,7 @@ public class PSRASalesSearchFetcher implements IFetcher<PSRASalesSearchMessage> 
     }
 
     @Override
-    public void doFetch(PSRASalesSearchMessage request) {
+    public void handle(PSRASalesSearchMessage request) {
         // TODO: impl
         log.info("Fetcher got {}!!!", request);
     }
