@@ -1,7 +1,7 @@
 package vcps.irsi.fetcher.listeners;
 
+import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.kafka.listener.adapter.ConsumerRecordMetadata;
 import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
@@ -26,11 +26,9 @@ public class PSRASalesSearchListener {
     }
 
     @KafkaListener(topics = "#{ __listener.supplierConfig.getSales().getSearchTopic() }")
-    public void listen(@Payload PSRASalesSearchRequest request, ConsumerRecordMetadata meta, Acknowledgment ack) {
-        // TODO: remove
-        log.info(request.toString());
-        log.info(meta.toString());
-        log.info(ack.toString());
+    public void listen(@Payload PSRASalesSearchRequest request, ConsumerRecord<?, ?> record, Acknowledgment ack) {
+        log.info("Processing message {} (p={},o={},t={}) <headers={}>", request, record.partition(),
+                record.offset(), record.timestamp(), record.headers().toString());
 
         // TODO: impl
     }
