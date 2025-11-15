@@ -7,7 +7,7 @@ import vcps.irsi.fetcher.services.tracking.ITrackable;
 /**
  * TODO: doc
  */
-public record PSRASalesSearchMessage(String county, int year, int month) implements ITrackable, IThrottleable {
+public record PSRASalesSearchRequest(String county, int year, int month) implements ITrackable, IThrottleable {
     private static final String TRACKING_TEMPLATE = "%S-SALES-SEARCH-%S-%d-%d";
 
     @Override

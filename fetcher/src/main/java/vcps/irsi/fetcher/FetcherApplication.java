@@ -7,9 +7,6 @@ import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.context.annotation.Bean;
 import lombok.extern.slf4j.Slf4j;
 
-import vcps.irsi.fetcher.dto.messages.PSRASalesSearchMessage;
-import vcps.irsi.fetcher.services.fetching.psra.sales_search.Fetcher;
-
 /**
  * TODO: doc
  */
@@ -17,14 +14,6 @@ import vcps.irsi.fetcher.services.fetching.psra.sales_search.Fetcher;
 @SpringBootApplication
 @ConfigurationPropertiesScan
 public class FetcherApplication {
-	// TODO: remove
-	private final Fetcher sales;
-
-	// TODO: remove
-	public FetcherApplication(Fetcher sales) {
-		this.sales = sales;
-	}
-
 	public static void main(String[] args) {
 		SpringApplication.run(FetcherApplication.class, args);
 	}
@@ -36,10 +25,6 @@ public class FetcherApplication {
 	ApplicationRunner runner() {
 		return args -> {
 			log.info("IRSI Fetcher is running");
-
-			var request = new PSRASalesSearchMessage("Dublin", 2025, 1);
-			boolean fetched = sales.fetch(request);
-			log.info("fetched? {}", fetched);
 		};
 	}
 }

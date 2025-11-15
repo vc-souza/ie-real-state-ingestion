@@ -16,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import vcps.irsi.fetcher.config.PSRASupplierConfig;
 import vcps.irsi.fetcher.dto.messages.PSRAPropertyMessage;
 import vcps.irsi.fetcher.dto.messages.PSRASaleMessage;
-import vcps.irsi.fetcher.dto.messages.PSRASalesSearchMessage;
+import vcps.irsi.fetcher.dto.messages.PSRASalesSearchRequest;
 import vcps.irsi.fetcher.services.fetching.FailedFetchingException;
 import vcps.irsi.fetcher.services.fetching.IFetcher;
 import vcps.irsi.fetcher.services.throttling.IThrottler;
@@ -27,7 +27,7 @@ import vcps.irsi.fetcher.services.tracking.ITracker;
  */
 @Slf4j
 @Service
-public class Fetcher implements IFetcher<PSRASalesSearchMessage> {
+public class Fetcher implements IFetcher<PSRASalesSearchRequest> {
     private static final String VERSION = "1.0.0";
 
     private static final String SEARCH_TEMPLATE = "%1$s/Downloads/PPR-%3$d-%4$02d-%2$s.csv/$FILE/PPR-%3$d-%4$02d-%2$s.csv";
@@ -58,7 +58,7 @@ public class Fetcher implements IFetcher<PSRASalesSearchMessage> {
     }
 
     @Override
-    public void handle(PSRASalesSearchMessage request) {
+    public void handle(PSRASalesSearchRequest request) {
         try {
             Parser.parse(searchResults(request)).forEach(
                     parsed -> {
@@ -73,14 +73,14 @@ public class Fetcher implements IFetcher<PSRASalesSearchMessage> {
     /**
      * TODO: doc
      */
-    private URI searchURI(PSRASalesSearchMessage request) {
+    private URI searchURI(PSRASalesSearchRequest request) {
         return URI.create(SEARCH_TEMPLATE.formatted(BASE_URL, request.county(), request.year(), request.month()));
     }
 
     /**
      * TODO: doc
      */
-    private Stream<String> searchResults(PSRASalesSearchMessage request) throws IOException, InterruptedException {
+    private Stream<String> searchResults(PSRASalesSearchRequest request) throws IOException, InterruptedException {
         var httpRequest = HttpRequest.newBuilder(searchURI(request)).header("user-agent", USER_AGENT).build();
         var httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString(Charset.forName("CP1252")));
         // skip CSV header
