@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
 
 import vcps.irsi.gateway.config.PSRASupplierConfig;
-import vcps.irsi.gateway.dto.messages.PSRASalesSearchMessage;
+import vcps.irsi.gateway.dto.messages.PSRASalesSearchRequest;
 import vcps.irsi.gateway.dto.payload.SalesIngestionRequest;
 import vcps.irsi.gateway.services.ingestion.ISalesIngestionHandler;
 
@@ -21,11 +21,11 @@ import vcps.irsi.gateway.services.ingestion.ISalesIngestionHandler;
 public class PSRASalesIngestionHandler implements ISalesIngestionHandler {
     private final static String VERSION = "1.0.0";
 
-    private final KafkaTemplate<String, PSRASalesSearchMessage> kafkaTemplate;
+    private final KafkaTemplate<String, PSRASalesSearchRequest> kafkaTemplate;
     private final PSRASupplierConfig supplierConfig;
 
     public PSRASalesIngestionHandler(
-            KafkaTemplate<String, PSRASalesSearchMessage> kafkaTemplate,
+            KafkaTemplate<String, PSRASalesSearchRequest> kafkaTemplate,
             PSRASupplierConfig supplierConfig) {
         this.kafkaTemplate = kafkaTemplate;
         this.supplierConfig = supplierConfig;
@@ -34,22 +34,22 @@ public class PSRASalesIngestionHandler implements ISalesIngestionHandler {
     /**
      * TODO: doc
      */
-    private Stream<PSRASalesSearchMessage> messagesFor(SalesIngestionRequest request) {
+    private Stream<PSRASalesSearchRequest> messagesFor(SalesIngestionRequest request) {
         var start = request.getStart().withDayOfMonth(1);
         var end = request.getEnd().withDayOfMonth(1).plusMonths(1);
 
         return start
                 .datesUntil(end, Period.ofMonths(1))
                 .flatMap(date -> request.getCounties().stream()
-                        .map(county -> new PSRASalesSearchMessage(county, date.getYear(), date.getMonthValue())));
+                        .map(county -> new PSRASalesSearchRequest(county, date.getYear(), date.getMonthValue())));
     }
 
     /**
      * TODO: doc
      */
-    private ProducerRecord<String, PSRASalesSearchMessage> toRecord(PSRASalesSearchMessage message) {
-        ProducerRecord<String, PSRASalesSearchMessage> record = new ProducerRecord<>(
-                supplierConfig.getSales().getProducerTopic(),
+    private ProducerRecord<String, PSRASalesSearchRequest> toRecord(PSRASalesSearchRequest message) {
+        var record = new ProducerRecord<>(
+                supplierConfig.getSales().getSearchTopic(),
                 message.county(),
                 message);
 
