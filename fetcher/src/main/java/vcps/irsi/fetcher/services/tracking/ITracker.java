@@ -12,7 +12,7 @@ import lombok.Setter;
  */
 public interface ITracker {
     /**
-     * TODO: config
+     * TODO: doc
      */
     @Getter
     @Setter

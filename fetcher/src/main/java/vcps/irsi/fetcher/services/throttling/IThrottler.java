@@ -14,7 +14,7 @@ import lombok.Setter;
  */
 public interface IThrottler {
     /**
-     * TODO: config
+     * TODO: doc
      */
     @Getter
     @Setter

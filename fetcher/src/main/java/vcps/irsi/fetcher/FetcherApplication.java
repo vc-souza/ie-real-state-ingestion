@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Bean;
 import lombok.extern.slf4j.Slf4j;
 
 import vcps.irsi.fetcher.dto.messages.PSRASalesSearchMessage;
-import vcps.irsi.fetcher.services.fetching.psra.PSRASalesSearchFetcher;
+import vcps.irsi.fetcher.services.fetching.psra.sales_search.Fetcher;
 
 /**
  * TODO: doc
@@ -18,10 +18,10 @@ import vcps.irsi.fetcher.services.fetching.psra.PSRASalesSearchFetcher;
 @ConfigurationPropertiesScan
 public class FetcherApplication {
 	// TODO: remove
-	private final PSRASalesSearchFetcher sales;
+	private final Fetcher sales;
 
 	// TODO: remove
-	public FetcherApplication(PSRASalesSearchFetcher sales) {
+	public FetcherApplication(Fetcher sales) {
 		this.sales = sales;
 	}
 
