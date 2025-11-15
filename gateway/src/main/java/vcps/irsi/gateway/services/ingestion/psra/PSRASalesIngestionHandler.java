@@ -48,7 +48,7 @@ public class PSRASalesIngestionHandler implements ISalesIngestionHandler {
      * TODO: doc
      */
     private ProducerRecord<String, PSRASalesSearchMessage> toRecord(PSRASalesSearchMessage message) {
-        ProducerRecord<String, PSRASalesSearchMessage> record = new ProducerRecord<>(
+        var record = new ProducerRecord<>(
                 supplierConfig.getSales().getSearchTopic(),
                 message.county(),
                 message);

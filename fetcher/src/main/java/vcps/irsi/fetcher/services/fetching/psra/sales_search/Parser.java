@@ -4,8 +4,6 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Optional;
-import java.util.function.Consumer;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
@@ -19,8 +17,20 @@ import vcps.irsi.fetcher.dto.messages.PSRASaleMessage;
  */
 @Slf4j
 public class Parser {
+    // TODO: doc
+    public static record Result(PSRASaleMessage sale, PSRAPropertyMessage property) {
+    }
+
     private static final DateTimeFormatter SLASHES_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private static final Pattern FIELD_PATTERN = Pattern.compile("\"(.*?)\"");
+
+    /**
+     * TODO: doc
+     */
+    public static Stream<Result> parse(Stream<String> rows) {
+        return rows.map(Parser::toFields).filter(Parser::isValid)
+                .map(fields -> new Result(parseSale(fields), parseProperty(fields)));
+    }
 
     /**
      * TODO: doc
@@ -91,36 +101,34 @@ public class Parser {
     /**
      * TODO: doc
      */
-    private static Optional<PSRASaleMessage> parseSale(List<String> fields) {
+    private static PSRASaleMessage parseSale(List<String> fields) {
         try {
-            return Optional.of(
-                    new PSRASaleMessage(
-                            eircode(fields),
-                            dateOfSale(fields),
-                            salePrice(fields)));
+            return new PSRASaleMessage(
+                    eircode(fields),
+                    dateOfSale(fields),
+                    salePrice(fields));
         } catch (Exception e) {
             log.error("Unable to parse sale from fields: %s".formatted(fields.toString()), e);
         }
 
-        return Optional.empty();
+        return null;
     }
 
     /**
      * TODO: doc
      */
-    private static Optional<PSRAPropertyMessage> parseProperty(List<String> fields) {
+    private static PSRAPropertyMessage parseProperty(List<String> fields) {
         try {
-            return Optional.of(
-                    new PSRAPropertyMessage(
-                            eircode(fields),
-                            county(fields),
-                            address(fields),
-                            propertyDescription(fields)));
+            return new PSRAPropertyMessage(
+                    eircode(fields),
+                    county(fields),
+                    address(fields),
+                    propertyDescription(fields));
         } catch (Exception e) {
             log.error("Unable to parse property from fields: %s".formatted(fields.toString()), e);
         }
 
-        return Optional.empty();
+        return null;
     }
 
     /**
@@ -128,18 +136,5 @@ public class Parser {
      */
     private static List<String> toFields(String row) {
         return FIELD_PATTERN.matcher(row).results().map(m -> m.group(1)).toList();
-    }
-
-    /**
-     * TODO: doc
-     */
-    public static void parse(Stream<String> rows, Consumer<PSRASaleMessage> onSale,
-            Consumer<PSRAPropertyMessage> onProperty) {
-
-        rows.map(Parser::toFields).filter(Parser::isValid).forEach(
-                fields -> {
-                    parseSale(fields).ifPresent(onSale);
-                    parseProperty(fields).ifPresent(onProperty);
-                });
     }
 }

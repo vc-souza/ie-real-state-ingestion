@@ -8,6 +8,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 /**
  * TODO: doc
  */
-public record PSRASaleMessage(String eircode, LocalDate date,
-                @JsonFormat(shape = JsonFormat.Shape.STRING) BigDecimal price) {
+public record PSRASaleMessage(String eircode, @JsonFormat(shape = JsonFormat.Shape.STRING) LocalDate date,
+        @JsonFormat(shape = JsonFormat.Shape.STRING) BigDecimal price) {
 }
