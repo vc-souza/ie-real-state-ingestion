@@ -25,6 +25,9 @@ public class PSRASalesSearchListener {
         this.fetcher = fetcher;
     }
 
+    /**
+     * TODO: doc
+     */
     @KafkaListener(topics = "${suppliers.psra.sales.search-topic}")
     public void listen(
             @Payload PSRASalesSearchRequest request,
