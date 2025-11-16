@@ -3,6 +3,7 @@ package vcps.irsi.fetcher.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.support.converter.JsonMessageConverter;
+import org.springframework.kafka.support.converter.RecordMessageConverter;
 
 /**
  * TODO: doc
@@ -13,7 +14,7 @@ public class KafkaConfig {
      * TODO: doc
      */
     @Bean
-    JsonMessageConverter jsonMessageConverter() {
+    RecordMessageConverter jsonMessageConverter() {
         return new JsonMessageConverter();
     }
 }
