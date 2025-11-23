@@ -1,12 +1,14 @@
 package vcps.irsi.archiver.listeners;
 
+import java.util.List;
+
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
-
+import vcps.irsi.archiver.archivers.IArchiver;
 import vcps.irsi.archiver.dto.messages.PSRASaleMessage;
 
 /**
@@ -15,6 +17,12 @@ import vcps.irsi.archiver.dto.messages.PSRASaleMessage;
 @Slf4j
 @Service
 public class PSRASalesListener {
+
+    private final List<IArchiver<PSRASaleMessage>> archivers;
+
+    public PSRASalesListener(List<IArchiver<PSRASaleMessage>> archivers) {
+        this.archivers = archivers;
+    }
 
     /**
      * TODO: doc
@@ -25,10 +33,11 @@ public class PSRASalesListener {
             ConsumerRecord<?, ?> record,
             Acknowledgment ack) {
 
-        log.info("Processing message {} (p={},o={},t={})", message, record.partition(), record.offset(),
+        log.debug("Processing message {} (p={},o={},t={})", message, record.partition(), record.offset(),
                 record.timestamp());
 
-        // TODO: archive -> ack
+        // TODO: archive -> ack (try/catch for each archiver)
+        archivers.forEach(a -> a.archive(message));
         // TODO: error -> nack? ack anyway?
     }
 }
