@@ -1,4 +1,4 @@
-package vcps.irsi.fetcher.dto.messages;
+package vcps.irsi.archiver.dto.messages;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

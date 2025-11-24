@@ -38,6 +38,7 @@ public class Parser {
     private static boolean isValid(List<String> fields) {
         return (fields != null
                 && fields.size() == 9
+                && !eircode(fields).isBlank()
                 && !isNotFullMarketPrice(fields)
                 && !isVATExclusive(fields));
     }
@@ -105,6 +106,7 @@ public class Parser {
         try {
             return new PSRASaleMessage(
                     eircode(fields),
+                    county(fields),
                     dateOfSale(fields),
                     salePrice(fields));
         } catch (Exception e) {

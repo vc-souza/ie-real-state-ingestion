@@ -1,0 +1,43 @@
+package vcps.irsi.archiver.listeners;
+
+import java.util.List;
+
+import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.support.Acknowledgment;
+import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.stereotype.Service;
+import lombok.extern.slf4j.Slf4j;
+
+import vcps.irsi.archiver.archivers.IArchiver;
+import vcps.irsi.archiver.dto.messages.PSRAPropertyMessage;
+
+/**
+ * TODO: doc
+ */
+@Slf4j
+@Service
+public class PSRAPropertiesListener {
+
+    private final List<IArchiver<PSRAPropertyMessage>> archivers;
+
+    public PSRAPropertiesListener(List<IArchiver<PSRAPropertyMessage>> archivers) {
+        this.archivers = archivers;
+    }
+
+    /**
+     * TODO: doc
+     */
+    @KafkaListener(topics = "${suppliers.psra.sales.properties-topic}")
+    public void listen(
+            @Payload PSRAPropertyMessage message,
+            ConsumerRecord<?, ?> record,
+            Acknowledgment ack) {
+
+        log.info("Processing message {} (p={},o={},t={})", message, record.partition(), record.offset(),
+                record.timestamp());
+
+        archivers.forEach(a -> a.archive(message));
+        ack.acknowledge();
+    }
+}
