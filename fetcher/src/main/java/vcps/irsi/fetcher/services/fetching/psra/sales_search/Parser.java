@@ -106,6 +106,7 @@ public class Parser {
         try {
             return new PSRASaleMessage(
                     eircode(fields),
+                    county(fields),
                     dateOfSale(fields),
                     salePrice(fields));
         } catch (Exception e) {

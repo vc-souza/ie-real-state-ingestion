@@ -34,11 +34,10 @@ public class PSRAPropertiesListener {
             ConsumerRecord<?, ?> record,
             Acknowledgment ack) {
 
-        log.debug("Processing message {} (p={},o={},t={})", message, record.partition(), record.offset(),
+        log.info("Processing message {} (p={},o={},t={})", message, record.partition(), record.offset(),
                 record.timestamp());
 
-        // TODO: archive -> ack (try/catch for each archiver)
         archivers.forEach(a -> a.archive(message));
-        // TODO: error -> nack? ack anyway?
+        ack.acknowledge();
     }
 }

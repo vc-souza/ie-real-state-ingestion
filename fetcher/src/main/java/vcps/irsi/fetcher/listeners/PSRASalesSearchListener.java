@@ -34,7 +34,7 @@ public class PSRASalesSearchListener {
             ConsumerRecord<?, ?> record,
             Acknowledgment ack) {
 
-        log.debug("Processing message {} (p={},o={},t={})", request, record.partition(), record.offset(),
+        log.info("Processing message {} (p={},o={},t={})", request, record.partition(), record.offset(),
                 record.timestamp());
 
         try {
