@@ -1,0 +1,42 @@
+x-common-services:
+  spring-boot-service: &spring-boot-service
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 3m
+      timeout: 30s
+      retries: 5
+      start_period: 60s
+
+services:
+  gateway:
+    <<: *spring-boot-service
+    container_name: irsi-gateway
+    build:
+      context: ./gateway
+      dockerfile: ../Dockerfile
+    ports:
+      - 18080:8080
+    volumes:
+      - .config/deployment/gateway/config:/app/config
+
+  fetcher:
+    <<: *spring-boot-service
+    container_name: irsi-fetcher
+    build:
+      context: ./fetcher
+      dockerfile: ../Dockerfile
+    ports:
+      - 18081:8080
+    volumes:
+      - .config/deployment/fetcher/config:/app/config
+
+  archiver:
+    <<: *spring-boot-service
+    container_name: irsi-archiver
+    build:
+      context: ./archiver
+      dockerfile: ../Dockerfile
+    ports:
+      - 18082:8080
+    volumes:
+      - .config/deployment/archiver/config:/app/config
