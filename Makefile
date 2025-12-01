@@ -43,7 +43,6 @@ run:
 stop: 
 	@docker compose down
 
-
 .PHONY: logs
 logs:
 	@docker compose logs -f
