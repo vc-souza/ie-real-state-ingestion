@@ -1,5 +1,9 @@
+HOSTNAME:=$(shell hostname)
+
 .PHONY: all
 all: run
+
+.EXPORT_ALL_VARIABLES:
 
 .config/deployment/archiver/config/application.properties:
 	@bash .scripts/host/gen.sh archiver \
@@ -42,6 +46,10 @@ run:
 .PHONY: stop
 stop: 
 	@docker compose down
+
+.PHONY: monitor
+monitor:
+	@docker compose ps
 
 .PHONY: logs
 logs:
