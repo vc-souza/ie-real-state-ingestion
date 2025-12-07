@@ -18,6 +18,8 @@ services:
       - 18080:8080
     volumes:
       - .config/deployment/gateway/config:/app/config
+    extra_hosts:
+      - "${HOSTNAME}=host-gateway"
 
   fetcher:
     <<: *spring-boot-service
@@ -29,6 +31,8 @@ services:
       - 18081:8080
     volumes:
       - .config/deployment/fetcher/config:/app/config
+    extra_hosts:
+      - "${HOSTNAME}=host-gateway"
 
   archiver:
     <<: *spring-boot-service
@@ -40,3 +44,5 @@ services:
       - 18082:8080
     volumes:
       - .config/deployment/archiver/config:/app/config
+    extra_hosts:
+      - "${HOSTNAME}=host-gateway"
