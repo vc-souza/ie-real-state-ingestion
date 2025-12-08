@@ -60,8 +60,12 @@ public class Fetcher implements IFetcher<PSRASalesSearchRequest> {
     @Override
     public void handle(PSRASalesSearchRequest request) {
         try {
+            log.info("Fulfilling request...");
+
             Parser.parse(searchResults(request)).forEach(
                     parsed -> {
+                        log.info("Producing results...");
+
                         publish(parsed.sale());
                         publish(parsed.property());
                     });
