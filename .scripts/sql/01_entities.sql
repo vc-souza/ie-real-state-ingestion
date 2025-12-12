@@ -27,6 +27,13 @@ CREATE TABLE IF NOT EXISTS `dim_properties` (
   PRIMARY KEY (`eircode`)
 ) ENGINE = InnoDB;
 
+CREATE TABLE IF NOT EXISTS `dim_postal_towns` (
+  `routing_key` CHAR(3) NOT NULL,
+  `name` VARCHAR(100) NOT NULL,
+  `county` VARCHAR(50) NOT NULL,
+  PRIMARY KEY (`routing_key`, `name`)
+) ENGINE = InnoDB;
+
 CREATE TABLE IF NOT EXISTS `fact_property_sales` (
   `id` BIGINT AUTO_INCREMENT NOT NULL,
   `property_eircode` CHAR(7) NOT NULL,
