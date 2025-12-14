@@ -27,11 +27,11 @@ CREATE TABLE IF NOT EXISTS `dim_properties` (
   PRIMARY KEY (`eircode`)
 ) ENGINE = InnoDB;
 
-CREATE TABLE IF NOT EXISTS `dim_postal_towns` (
+CREATE TABLE IF NOT EXISTS `dim_postal_areas` (
   `routing_key` CHAR(3) NOT NULL,
-  `name` VARCHAR(100) NOT NULL,
   `county` VARCHAR(50) NOT NULL,
-  PRIMARY KEY (`routing_key`, `name`)
+  `towns` JSON NOT NULL,
+  PRIMARY KEY (`routing_key`, `county`)
 ) ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS `fact_property_sales` (
